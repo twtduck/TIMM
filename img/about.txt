@@ -1,0 +1,3 @@
+The images in this directory are icons for the media player controls. They were retrieved from the following page:
+
+https://en.wikipedia.org/wiki/Media_controls
