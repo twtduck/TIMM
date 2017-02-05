@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -74,13 +75,17 @@ public class GUI extends Thread {
 	}
 
 	public static void createMainWindowGUI() {
+		System.out.println("GUI started loading at " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 		// Create file menu for importing a folder
 		JMenuBar menuBar = new JMenuBar();
+		System.out.println("Menu bar Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem manageLibraryLocationsMenuItem = new JMenuItem("Manage library locations...");
 		JMenuItem exitMenuItem = new JMenuItem("Exit");
+		System.out.println("Menu Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 		manageLibraryLocationsMenuItem.addActionListener(new Listener.MenuItemListener());
 		exitMenuItem.addActionListener(new Listener.MenuItemListener());
+		System.out.println("Middle Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 		frame = new JFrame("Window");
 		menuBar.add(fileMenu);
 		fileMenu.add(manageLibraryLocationsMenuItem);
@@ -89,6 +94,8 @@ public class GUI extends Thread {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		if (START_MAXIMIZED)
 			frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		
+		System.out.println("GUI  Barebones Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 
 		// Main window panel
 		frame.getContentPane().setLayout(new GridBagLayout());
@@ -106,6 +113,7 @@ public class GUI extends Thread {
 
 		frame.getContentPane().add(controlPanel, mainWinConstraints);
 
+		System.out.println("Control panel Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 		// Lower panel
 		// Playlist panel
 		createPlaylistPanel();
@@ -125,16 +133,18 @@ public class GUI extends Thread {
 		mainWinConstraints.insets = new Insets(5, 5, 5, 10);
 		frame.getContentPane().add(filterPanel, mainWinConstraints);
 
+		System.out.println("Filter Panel Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 		// Filtered results panel
 		createFilteredResultsPanel();
 		mainWinConstraints.gridy = 2;
 		mainWinConstraints.weighty = 0.7;
 		mainWinConstraints.insets = new Insets(5, 5, 10, 10);
 		frame.getContentPane().add(filteredResultsPanel, mainWinConstraints);
+		System.out.println("Filtered results panel Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 
 		frame.pack();
 		frame.setVisible(true);
-
+		System.out.println("GUI Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 	}
 
 	public static void createControlPanel() {

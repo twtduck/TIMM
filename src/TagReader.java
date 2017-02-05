@@ -154,65 +154,81 @@ public class TagReader {
 	}
 
 	public void importTags(String tagString) {
-		title = tagString.substring(0, tagString.indexOf("::"));
-		tagString = tagString.substring(tagString.indexOf("::") + 2);
-		artist = tagString.substring(0, tagString.indexOf("::"));
-		tagString = tagString.substring(tagString.indexOf("::") + 2);
-		album = tagString.substring(0, tagString.indexOf("::"));
-		tagString = tagString.substring(tagString.indexOf("::") + 2);
-		year = Integer.parseInt(tagString.substring(0, tagString.indexOf("::")));
-		tagString = tagString.substring(tagString.indexOf("::") + 2);
-		trackNum = Integer.parseInt(tagString.substring(0, tagString.indexOf("::")));
-		tagString = tagString.substring(tagString.indexOf("::") + 2);
-		genre = tagString.substring(0, tagString.indexOf("::"));
-		tagString = tagString.substring(tagString.indexOf("::") + 2);
-		comment = tagString.substring(0, tagString.indexOf("::"));
-		tagString = tagString.substring(tagString.indexOf("::") + 2);
-		albumArtist = tagString.substring(0, tagString.indexOf("::"));
-		tagString = tagString.substring(tagString.indexOf("::") + 2);
-		composer = tagString.substring(0, tagString.indexOf("::"));
-		tagString = tagString.substring(tagString.indexOf("::") + 2);
-		discNum = Integer.parseInt(tagString.substring(0, tagString.indexOf("::")));
-		tagString = tagString.substring(tagString.indexOf("::") + 2);
-		duration = Double.parseDouble(tagString);
+		title = toCompatString(tagString.substring(0, tagString.indexOf("::")));
+		tagString = toCompatString(tagString.substring(tagString.indexOf("::") + 2));
+		artist = toCompatString(tagString.substring(0, tagString.indexOf("::")));
+		tagString = toCompatString(tagString.substring(tagString.indexOf("::") + 2));
+		album = toCompatString(tagString.substring(0, tagString.indexOf("::")));
+		tagString = toCompatString(tagString.substring(tagString.indexOf("::") + 2));
+		year = Integer.parseInt(toCompatString(tagString.substring(0, tagString.indexOf("::"))));
+		tagString = toCompatString(tagString.substring(tagString.indexOf("::") + 2));
+		trackNum = Integer.parseInt(toCompatString(tagString.substring(0, tagString.indexOf("::"))));
+		tagString = toCompatString(tagString.substring(tagString.indexOf("::") + 2));
+		genre = toCompatString(tagString.substring(0, tagString.indexOf("::")));
+		tagString = toCompatString(tagString.substring(tagString.indexOf("::") + 2));
+		comment = toCompatString(tagString.substring(0, tagString.indexOf("::")));
+		tagString = toCompatString(tagString.substring(tagString.indexOf("::") + 2));
+		albumArtist = toCompatString(tagString.substring(0, tagString.indexOf("::")));
+		tagString = toCompatString(tagString.substring(tagString.indexOf("::") + 2));
+		composer = toCompatString(tagString.substring(0, tagString.indexOf("::")));
+		tagString = toCompatString(tagString.substring(tagString.indexOf("::") + 2));
+		discNum = Integer.parseInt(toCompatString(tagString.substring(0, tagString.indexOf("::"))));
+		tagString = toCompatString(tagString.substring(tagString.indexOf("::") + 2));
+		duration = Double.parseDouble(toCompatString(tagString));
 	}
 
 	public String exportTags() {
-		return title + "::" + artist + "::" + album + "::" + year + "::" + trackNum + "::" + genre + "::" + comment
-				+ "::" + albumArtist + "::" + composer + "::" + discNum + "::" + duration;
+		return toCompatString(title) + toCompatString("::") + toCompatString(artist) + toCompatString("::")
+				+ toCompatString(album) + toCompatString("::") + toCompatString(Integer.toString(year))
+				+ toCompatString("::") + toCompatString(Integer.toString(trackNum)) + toCompatString("::")
+				+ toCompatString(genre) + toCompatString("::") + toCompatString(comment + "::")
+				+ toCompatString(albumArtist) + toCompatString("::") + toCompatString(composer) + toCompatString("::")
+				+ toCompatString(Integer.toString(discNum)) + toCompatString("::")
+				+ toCompatString(Double.toString(duration));
 	}
-	
+
 	public String getYearString() {
-		if(year == Integer.MIN_VALUE)
+		if (year == Integer.MIN_VALUE)
 			return "Unknown Year";
 		return Integer.toString(year);
 	}
-	
+
 	public String getTrackNumString() {
-		if(trackNum == Integer.MIN_VALUE)
+		if (trackNum == Integer.MIN_VALUE)
 			return "";
 		return Integer.toString(trackNum);
 	}
-	
+
 	public String getDiscNumString() {
 		return "Disc " + Integer.toString(discNum);
 	}
-	
+
 	public String getDurationString() {
-		int secs = (int) (duration / 1000) % 60; 
+		int secs = (int) (duration / 1000) % 60;
 		int mins = (int) (duration / (1000 * 60) % 60);
 		int hours = (int) (duration / (1000 * 60 * 60) % 60);
 		return is(hours) + ":" + is(mins) + ":" + is(secs);
 	}
-	
+
 	private static String is(int i) {
 		String temp = Integer.toString(i);
 		if (i < 10) {
 			temp = "0" + temp;
 		}
-		if(i == Integer.MIN_VALUE)
+		if (i == Integer.MIN_VALUE)
 			return "";
 		return temp;
 	}
 
+	private static String toCompatString(String s) {
+		String newString = "";
+		for (char c : s.toCharArray()) {
+			if (((int) c) > 31) {
+				if (((int) c) < 126) {
+					newString += c;
+				}
+			}
+		}
+		return newString;
+	}
 }

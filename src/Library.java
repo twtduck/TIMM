@@ -2,6 +2,7 @@
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -13,7 +14,7 @@ public class Library {
 	public static boolean updateInterrupt = false;
 	public static boolean libraryIsUpdating = false;
 
-	final static File LIB_FILE = new File(System.getProperty("user.home") + "/.local/share/wmm-library.db");
+	final static File LIB_FILE = new File(System.getProperty("user.home") + "/.local/share/timm-library.db");
 	public static ArrayList<File> locations = new ArrayList<File>();
 	public static ArrayList<Artist> music = new ArrayList<Artist>();
 	public static ArrayList<Song> filteredResults = new ArrayList<Song>();
@@ -68,7 +69,7 @@ public class Library {
 		} else {
 			loadLibraryFromFile();
 		}
-		
+		System.out.println("Library Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 	}
 	
 	public static void addSong(Song s) {

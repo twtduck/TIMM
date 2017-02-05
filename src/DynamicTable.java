@@ -99,5 +99,6 @@ public class DynamicTable extends JPanel {
 		tableScroller.setPreferredSize(new Dimension(this.getPreferredSize().width - 20, this.getPreferredSize().height - 20));
 		this.removeAll();
 		this.add(tableScroller,c);
+		table.setRowSelectionInterval(0, 0);
 	}
 }

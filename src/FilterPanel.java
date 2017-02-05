@@ -26,7 +26,6 @@ public class FilterPanel extends JPanel {
 		this.constraints.weightx = 1;
 		this.constraints.weighty = 1;
 		table.refreshTable();
-		table.table.setRowSelectionInterval(0, 0);
 		this.add(table, this.constraints);
 	}
 }

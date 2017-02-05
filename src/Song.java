@@ -24,7 +24,7 @@ public class Song extends Thread {
 		this.tags = new TagReader(this);
 		this.tags.importTags(dataString.substring(dataString.indexOf("::") + 2));
 		this.player = new SongPlayer(this);
-		System.out.println("Imported " + this.mediaFile.getAbsolutePath() + " from library file");
+		//System.out.println("Imported " + this.mediaFile.getAbsolutePath() + " from library file");
 	}
 	
 	public TagReader getTags() {
