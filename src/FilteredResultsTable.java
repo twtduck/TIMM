@@ -13,13 +13,10 @@ public class FilteredResultsTable extends DynamicTable {
 	}
 
 	public void refresh() {
-		System.out.println("Refreshing filteredResultsTable.");
 		String yearFilter = GUI.yearFilterPanel.getSelectedRow();
 		String genreFilter = GUI.genreFilterPanel.getSelectedRow();
-		System.out.println(genreFilter);
 		String artistFilter = GUI.artistFilterPanel.getSelectedRow();
 		String albumFilter = GUI.albumFilterPanel.getSelectedRow();
-		System.out.println("AllMusic size:" + allMusic.size());
 		clearNoRefresh();
 		filteredResults.clear();
 		filteredResultsYearList.clear();
@@ -46,7 +43,6 @@ public class FilteredResultsTable extends DynamicTable {
 			if(yearGood && genreGood && artistGood) 
 				addToListIfAbsent(s.getTags().getAlbum(), filteredResultsAlbumList);
 			if(yearGood && genreGood && artistGood && albumGood) {
-				System.out.println("Added to filtered results: " + s.getTags().getTitle());
 				filteredResults.add(s);
 			}
 				
@@ -60,6 +56,11 @@ public class FilteredResultsTable extends DynamicTable {
 			addRowToEndNoRefresh(row);
 		}
 		refreshTable();
+		System.out.println("FRT refresh call");
+		refreshFilters();
+		this.setVisible(false);
+		this.repaint();
+		this.setVisible(true);
 	}
 	
 	private void addToListIfAbsent(String s, ArrayList<String> list) {
@@ -68,9 +69,11 @@ public class FilteredResultsTable extends DynamicTable {
 				return;
 		}
 		list.add(s);
+		//System.out.println("Added " + s + " to display list for a filter");
 	}
 	
 	public static void refreshFilters() {
+		System.out.println("Filter refresh");
 		GUI.yearFilterPanel.refreshYears();
 		GUI.genreFilterPanel.refreshGenres();
 		GUI.artistFilterPanel.refreshArtists();

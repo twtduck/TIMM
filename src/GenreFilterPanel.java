@@ -23,15 +23,24 @@ public class GenreFilterPanel extends FilterPanel {
 	}
 	
 	public void refreshGenres() {
+		System.out.println("Refresh genres called: " + FilteredResultsTable.filteredResultsGenreList);
 		genres.clear();
-		genres = FilteredResultsTable.filteredResultsGenreList;
+		genres.addAll(FilteredResultsTable.filteredResultsGenreList);
+		table.clearNoRefresh();
+		String[] wildcard = {"All genres"};
+		table.addRowToEndNoRefresh(wildcard);
+		System.out.println("Genres right before adding: " + genres);
 		for(int i = 0; i < genres.size(); i++) {
 			String[] row = {genres.get(i)};
 			table.addRowToEndNoRefresh(row);
+			System.out.println("Added \"" + genres.get(i) + "\" to the table");
 		}
 		table.refreshTable();
 		ListSelectionModel listSelectionModel = table.table.getSelectionModel();
 		listSelectionModel.addListSelectionListener(new Listener.FilterListener());
+		this.setVisible(false);
+		this.repaint();
+		this.setVisible(true);
 	}
 	
 

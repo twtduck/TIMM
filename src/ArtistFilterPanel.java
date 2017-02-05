@@ -24,7 +24,10 @@ public class ArtistFilterPanel extends FilterPanel {
 	
 	public void refreshArtists() {
 		artists.clear();
-		artists = FilteredResultsTable.filteredResultsArtistList;
+		artists.addAll(FilteredResultsTable.filteredResultsArtistList);
+		table.clearNoRefresh();
+		String[] wildcard = {"All artists"};
+		table.addRowToEndNoRefresh(wildcard);
 		for(int i = 0; i < artists.size(); i++) {
 			String[] row = {artists.get(i)};
 			table.addRowToEndNoRefresh(row);
@@ -32,6 +35,9 @@ public class ArtistFilterPanel extends FilterPanel {
 		table.refreshTable();
 		ListSelectionModel listSelectionModel = table.table.getSelectionModel();
 		listSelectionModel.addListSelectionListener(new Listener.FilterListener());
+		this.setVisible(false);
+		this.repaint();
+		this.setVisible(true);
 	}
 	
 }

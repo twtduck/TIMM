@@ -24,7 +24,10 @@ public class AlbumFilterPanel extends FilterPanel {
 	
 	public void refreshAlbums() {
 		albums.clear();
-		albums = FilteredResultsTable.filteredResultsAlbumList;
+		albums.addAll(FilteredResultsTable.filteredResultsAlbumList);
+		table.clearNoRefresh();
+		String[] wildcard = {"All albums"};
+		table.addRowToEndNoRefresh(wildcard);
 		for(int i = 0; i < albums.size(); i++) {
 			String[] row = {albums.get(i)};
 			table.addRowToEndNoRefresh(row);
@@ -32,6 +35,9 @@ public class AlbumFilterPanel extends FilterPanel {
 		table.refreshTable();
 		ListSelectionModel listSelectionModel = table.table.getSelectionModel();
 		listSelectionModel.addListSelectionListener(new Listener.FilterListener());
+		this.setVisible(false);
+		this.repaint();
+		this.setVisible(true);
 	}
 	
 }

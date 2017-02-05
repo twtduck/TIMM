@@ -54,8 +54,7 @@ public abstract class Listener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Repaint!");
-			GUI.frame.repaint();
+			
 		}
 
 	}

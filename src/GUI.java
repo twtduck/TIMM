@@ -386,7 +386,7 @@ public class GUI extends Thread {
 		filteredResultsPanelConstraints.weightx = 1;
 		filteredResultsPanelConstraints.weighty = 1;
 		
-		String[] columns = { "Track Number", "Title", "Genre", "Artist", "Album", "Time" };
+		String[] columns = { "Track #", "Title", "Genre", "Artist", "Album", "Time" };
 		filteredResultsTable = new FilteredResultsTable(columns);
 
 		for (Library.Artist artist : Library.music) {
@@ -446,7 +446,6 @@ public class GUI extends Thread {
 		filteredResultsTable.refresh();
 		filteredResultsTable.setBorder(genBorder());
 		filteredResultsPanel.add(filteredResultsTable, filteredResultsPanelConstraints);
-		FilteredResultsTable.refreshFilters();
 		
 	}
 
