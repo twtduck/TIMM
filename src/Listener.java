@@ -1,22 +1,25 @@
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
-
 import javax.swing.JMenuItem;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public abstract class Listener {
-	public static class LibraryUpdateWindowListener implements WindowListener {
+	
+	public static class FilterListener implements ListSelectionListener {
 
 		@Override
-		public void windowActivated(WindowEvent arg0) {
-			// TODO Auto-generated method stub
-
+		public void valueChanged(ListSelectionEvent e) {
+			if(!e.getValueIsAdjusting()) {
+				GUI.filteredResultsTable.refresh();
+			}
 		}
+		
+	}
+	
+	public static class LibraryUpdateWindowListener implements WindowListener {
 
 		@Override
 		public void windowClosed(WindowEvent arg0) {
@@ -27,31 +30,23 @@ public abstract class Listener {
 		public void windowClosing(WindowEvent arg0) {
 			Library.updateInterrupt = true;
 		}
+		
+		// Necessary method implementations
 
 		@Override
-		public void windowDeactivated(WindowEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
+		public void windowDeactivated(WindowEvent arg0) {}
 
 		@Override
-		public void windowDeiconified(WindowEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
+		public void windowDeiconified(WindowEvent arg0) {}
 
 		@Override
-		public void windowIconified(WindowEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
+		public void windowIconified(WindowEvent arg0) {}
 
 		@Override
-		public void windowOpened(WindowEvent arg0) {
-			// TODO Auto-generated method stub
+		public void windowOpened(WindowEvent arg0) {}
 
-		}
-
+		@Override
+		public void windowActivated(WindowEvent arg0) {}
 	}
 
 	public static class ControlButtonListener implements ActionListener {
@@ -59,7 +54,8 @@ public abstract class Listener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-
+			System.out.println("Repaint!");
+			GUI.frame.repaint();
 		}
 
 	}

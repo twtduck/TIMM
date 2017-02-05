@@ -5,7 +5,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -31,8 +30,12 @@ public class GUI extends Thread {
 	private static JLabel artistLabel;
 	private static JSlider seekerSlider;
 	public static JLabel seekerLabel;
-	private static GenreFilterPanel genreFilterPanel;
+	public static YearFilterPanel yearFilterPanel;
+	public static GenreFilterPanel genreFilterPanel;
+	public static ArtistFilterPanel artistFilterPanel;
+	public static AlbumFilterPanel albumFilterPanel;
 	private static JSlider volumeSlider;
+	public static FilteredResultsTable filteredResultsTable;
 	public static JPanel playlistPanel;
 	public static ArrayList<FilterPanel> filterPanels = new ArrayList<FilterPanel>();
 	private static JLabel volumeLabel;
@@ -75,17 +78,13 @@ public class GUI extends Thread {
 	}
 
 	public static void createMainWindowGUI() {
-		System.out.println("GUI started loading at " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 		// Create file menu for importing a folder
 		JMenuBar menuBar = new JMenuBar();
-		System.out.println("Menu bar Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem manageLibraryLocationsMenuItem = new JMenuItem("Manage library locations...");
 		JMenuItem exitMenuItem = new JMenuItem("Exit");
-		System.out.println("Menu Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 		manageLibraryLocationsMenuItem.addActionListener(new Listener.MenuItemListener());
 		exitMenuItem.addActionListener(new Listener.MenuItemListener());
-		System.out.println("Middle Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 		frame = new JFrame("Window");
 		menuBar.add(fileMenu);
 		fileMenu.add(manageLibraryLocationsMenuItem);
@@ -95,8 +94,10 @@ public class GUI extends Thread {
 		if (START_MAXIMIZED)
 			frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		
-		System.out.println("GUI  Barebones Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
+		// A few objects need to be created early to fulfill dependencies
+		genreFilterPanel = new GenreFilterPanel();
 
+		
 		// Main window panel
 		frame.getContentPane().setLayout(new GridBagLayout());
 		GridBagConstraints mainWinConstraints = new GridBagConstraints();
@@ -113,7 +114,6 @@ public class GUI extends Thread {
 
 		frame.getContentPane().add(controlPanel, mainWinConstraints);
 
-		System.out.println("Control panel Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 		// Lower panel
 		// Playlist panel
 		createPlaylistPanel();
@@ -133,18 +133,15 @@ public class GUI extends Thread {
 		mainWinConstraints.insets = new Insets(5, 5, 5, 10);
 		frame.getContentPane().add(filterPanel, mainWinConstraints);
 
-		System.out.println("Filter Panel Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 		// Filtered results panel
 		createFilteredResultsPanel();
 		mainWinConstraints.gridy = 2;
 		mainWinConstraints.weighty = 0.7;
 		mainWinConstraints.insets = new Insets(5, 5, 10, 10);
 		frame.getContentPane().add(filteredResultsPanel, mainWinConstraints);
-		System.out.println("Filtered results panel Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 
 		frame.pack();
 		frame.setVisible(true);
-		System.out.println("GUI Loaded in " + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + " ms");
 	}
 
 	public static void createControlPanel() {
@@ -347,25 +344,24 @@ public class GUI extends Thread {
 		filterPanelConstraints.weighty = 1;
 		filterPanelConstraints.gridy = 0;
 		Dimension filterPanelSize = new Dimension(208, 230);
-		YearFilterPanel yearFilterPanel = new YearFilterPanel();
+		yearFilterPanel = new YearFilterPanel();
 		yearFilterPanel.setBorder(genBorder());
 		yearFilterPanel.setPreferredSize(filterPanelSize);
 		filterPanel.add(yearFilterPanel, filterPanelConstraints);
 		filterPanels.add(yearFilterPanel);
-		genreFilterPanel = new GenreFilterPanel();
 		genreFilterPanel.setBorder(genBorder());
 		genreFilterPanel.setPreferredSize(filterPanelSize);
 		filterPanelConstraints.insets = new Insets(10, 5, 10, 5);
 		filterPanelConstraints.gridx = 1;
 		filterPanel.add(genreFilterPanel, filterPanelConstraints);
 		filterPanels.add(genreFilterPanel);
-		ArtistFilterPanel artistFilterPanel = new ArtistFilterPanel();
+		artistFilterPanel = new ArtistFilterPanel();
 		artistFilterPanel.setBorder(genBorder());
 		artistFilterPanel.setPreferredSize(filterPanelSize);
 		filterPanelConstraints.gridx = 2;
 		filterPanel.add(artistFilterPanel, filterPanelConstraints);
 		filterPanels.add(artistFilterPanel);
-		AlbumFilterPanel albumFilterPanel = new AlbumFilterPanel();
+		albumFilterPanel = new AlbumFilterPanel();
 		albumFilterPanel.setBorder(genBorder());
 		albumFilterPanel.setPreferredSize(filterPanelSize);
 		filterPanelConstraints.gridx = 3;
@@ -389,9 +385,10 @@ public class GUI extends Thread {
 		filteredResultsPanelConstraints.gridy = 0;
 		filteredResultsPanelConstraints.weightx = 1;
 		filteredResultsPanelConstraints.weighty = 1;
-
+		
 		String[] columns = { "Track Number", "Title", "Genre", "Artist", "Album", "Time" };
-		DynamicTable filterResultsTable = new DynamicTable(columns);
+		filteredResultsTable = new FilteredResultsTable(columns);
+
 		for (Library.Artist artist : Library.music) {
 			for (Library.Album album : artist.albums) {
 				for (Library.Disc disc : album.discs) {
@@ -409,7 +406,6 @@ public class GUI extends Thread {
 
 					@Override
 					public int compare(Library.Disc o1, Library.Disc o2) {
-						// TODO Auto-generated method stub
 						return o1.discNum - o2.discNum;
 					}
 
@@ -420,7 +416,6 @@ public class GUI extends Thread {
 
 				@Override
 				public int compare(Library.Album o1, Library.Album o2) {
-					// TODO Auto-generated method stub
 					return o1.simpleName.compareTo(o2.simpleName);
 				}
 
@@ -438,23 +433,21 @@ public class GUI extends Thread {
 			for (Library.Album album : artist.albums) {
 				for (Library.Disc disc : album.discs) {
 					for (Song track : disc.tracks) {
-						Library.filteredResults.add(track);
+						FilteredResultsTable.allMusic.add(track);
+						String[] row = { track.getTags().getTrackNumString(), track.getTags().getTitle(),
+								track.getTags().getGenre(), track.getTags().getArtist(), track.getTags().getAlbum(),
+								track.getTags().getDurationString() };
+						filteredResultsTable.addRowToEndNoRefresh(row);
 					}
 				}
 			}
 		}
-		for (Song track : Library.filteredResults) {
-			String[] row = { track.getTags().getTrackNumString(), track.getTags().getTitle(),
-					track.getTags().getGenre(), track.getTags().getArtist(), track.getTags().getAlbum(),
-					track.getTags().getDurationString() };
-			filterResultsTable.addRowToEndNoRefresh(row);
-		}
-		filterResultsTable.setPreferredSize(new Dimension(864, 378));
+		filteredResultsTable.setPreferredSize(new Dimension(864, 378));
+		filteredResultsTable.refresh();
+		filteredResultsTable.setBorder(genBorder());
+		filteredResultsPanel.add(filteredResultsTable, filteredResultsPanelConstraints);
+		FilteredResultsTable.refreshFilters();
 		
-		filterResultsTable.refreshTable();
-		filterResultsTable.setBorder(genBorder());
-		filteredResultsPanel.add(filterResultsTable, filteredResultsPanelConstraints);
-		genreFilterPanel.refreshGenres();
 	}
 
 	public static void manageLibraryLocations() {

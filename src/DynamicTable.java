@@ -1,21 +1,19 @@
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 @SuppressWarnings("serial")
 public class DynamicTable extends JPanel {
 	public JTable table;
-	private ArrayList<String[]> rows;
+	public  ArrayList<String[]> rows;
 	private String[] columns;
 	private GridBagConstraints c;
 	public DynamicTable(String[] columns, String firstRow) {
@@ -56,14 +54,23 @@ public class DynamicTable extends JPanel {
 	}
 	
 	public void removeLastRow() {
-		rows.remove(rows.size() - 1);
+		removeLastRowNoRefresh();
 		refreshTable();
 	}
 	
-	public void clear() {
+	public void removeLastRowNoRefresh() {
+		rows.remove(rows.size() - 1);
+	}
+	
+	public void clearNoRefresh() {
 		while(rows.size() > 0) {
-			removeLastRow();
+			removeLastRowNoRefresh();
 		}
+	}
+	
+	public void clear() {
+		clearNoRefresh();
+		refreshTable();
 	}
 	
 	public String[] getColumns() {
@@ -99,6 +106,8 @@ public class DynamicTable extends JPanel {
 		tableScroller.setPreferredSize(new Dimension(this.getPreferredSize().width - 20, this.getPreferredSize().height - 20));
 		this.removeAll();
 		this.add(tableScroller,c);
+		System.out.println("Num of rows: " + rows.size());
 		table.setRowSelectionInterval(0, 0);
+		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Scanner;
 
 public class Library {
@@ -17,7 +16,7 @@ public class Library {
 	final static File LIB_FILE = new File(System.getProperty("user.home") + "/.local/share/timm-library.db");
 	public static ArrayList<File> locations = new ArrayList<File>();
 	public static ArrayList<Artist> music = new ArrayList<Artist>();
-	public static ArrayList<Song> filteredResults = new ArrayList<Song>();
+	//public static ArrayList<Song> filteredResults = new ArrayList<Song>();
 	public static class Disc {
 		public int discNum;
 		public ArrayList<Song> tracks;
@@ -194,8 +193,8 @@ public class Library {
 						}
 						libFileWriter.close();
 					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
+						System.exit(1); // This should never happen, since we checked that the file exists
 					}
 				}
 			}
