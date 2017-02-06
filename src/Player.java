@@ -1,5 +1,4 @@
-import java.io.File;
-import java.util.ArrayList;
+
 
 public class Player {
 	public enum Status {
@@ -12,8 +11,9 @@ public class Player {
 
 	public static void play() {
 		if(status == Status.Paused) {
-			
+			resume();
 		}
+		//TODO: Add code for if the player is stopped
 	}
 	public static void pause() {
 		if(status == Status.Playing) {
@@ -41,7 +41,7 @@ public class Player {
 	}
 
 	public static Double getVolume() {
-		return volume; //EDIT: Make volume variable
+		return volume; 
 	}
 
 	public static void setVolume(double vol) {
