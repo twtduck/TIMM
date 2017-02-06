@@ -16,7 +16,6 @@ public abstract class Listener {
 				GUI.filteredResultsTable.refresh();
 			}
 		}
-		
 	}
 	
 	public static class LibraryUpdateWindowListener implements WindowListener {

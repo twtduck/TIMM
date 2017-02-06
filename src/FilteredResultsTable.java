@@ -7,7 +7,7 @@ public class FilteredResultsTable extends DynamicTable {
 	public static ArrayList<String> filteredResultsGenreList = new ArrayList<String>();
 	public static ArrayList<String> filteredResultsArtistList = new ArrayList<String>();
 	public static ArrayList<String> filteredResultsAlbumList= new ArrayList<String>();
-
+	private static boolean filtersHaveRefreshed = false;
 	public FilteredResultsTable(String[] columns) {
 		super(columns);
 	}
@@ -56,7 +56,6 @@ public class FilteredResultsTable extends DynamicTable {
 			addRowToEndNoRefresh(row);
 		}
 		refreshTable();
-		System.out.println("FRT refresh call");
 		refreshFilters();
 		this.setVisible(false);
 		this.repaint();
@@ -73,11 +72,19 @@ public class FilteredResultsTable extends DynamicTable {
 	}
 	
 	public static void refreshFilters() {
-		System.out.println("Filter refresh");
-		GUI.yearFilterPanel.refreshYears();
-		GUI.genreFilterPanel.refreshGenres();
-		GUI.artistFilterPanel.refreshArtists();
-		GUI.albumFilterPanel.refreshAlbums();
+		if(filtersHaveRefreshed) {
+			System.out.println("Number of filter panels: " + FilterPanel.filterPanels.size());
+			for(FilterPanel fp : FilterPanel.filterPanels) {
+				fp.refreshFilterPanel();
+			}
+		} else {
+			GUI.albumFilterPanel.refreshFilterPanel();
+			GUI.artistFilterPanel.refreshFilterPanel();
+			GUI.yearFilterPanel.refreshFilterPanel();
+			GUI.genreFilterPanel.refreshFilterPanel();
+		}
+		
+		
 	}
 
 }

@@ -21,8 +21,8 @@ public class YearFilterPanel extends FilterPanel {
 			}
 		}
 	}
-	
-	public void refreshYears() {
+	@Override
+	public void refreshFilterPanel() {
 		years.clear();
 		years.addAll(FilteredResultsTable.filteredResultsYearList);
 		table.clearNoRefresh();
@@ -33,6 +33,8 @@ public class YearFilterPanel extends FilterPanel {
 			table.addRowToEndNoRefresh(row);
 		}
 		table.refreshTable();
+		if(!FilterPanel.filterPanels.contains(this))
+			FilterPanel.filterPanels.add(this);
 		ListSelectionModel listSelectionModel = table.table.getSelectionModel();
 		listSelectionModel.addListSelectionListener(new Listener.FilterListener());
 		this.setVisible(false);

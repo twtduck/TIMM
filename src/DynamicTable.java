@@ -2,6 +2,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -10,7 +11,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-@SuppressWarnings("serial")
 public class DynamicTable extends JPanel {
 	public JTable table;
 	public  ArrayList<String[]> rows;
@@ -48,6 +48,11 @@ public class DynamicTable extends JPanel {
 	
 	public void addRowToBeginning(String[] row) {
 		rows.add(0, row);
+		refreshTable();
+	}
+	
+	public void addRowAsSecond(String[] row) {
+		rows.add(1, row);
 		refreshTable();
 	}
 	
@@ -95,8 +100,11 @@ public class DynamicTable extends JPanel {
 				return false;
 			}
 		};
-		if(this.hasBeenRefreshed)
+		if(this.hasBeenRefreshed) {
+			System.out.println("[" + (Calendar.getInstance().getTimeInMillis() - Main.startTime) + "] The selected row number is " + this.table.getSelectionModel().getMinSelectionIndex());
 			this.selectedRow = rows.get(this.table.getSelectionModel().getMinSelectionIndex());
+		}
+			
 		this.table = new JTable(model);
 		this.table.setFillsViewportHeight(true);
 		this.table.getColumnModel().getColumn(0).setPreferredWidth(15);

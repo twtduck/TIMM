@@ -21,8 +21,8 @@ public class AlbumFilterPanel extends FilterPanel {
 			}
 		}
 	}
-	
-	public void refreshAlbums() {
+	@Override
+	public void refreshFilterPanel() {
 		albums.clear();
 		albums.addAll(FilteredResultsTable.filteredResultsAlbumList);
 		table.clearNoRefresh();
@@ -35,6 +35,8 @@ public class AlbumFilterPanel extends FilterPanel {
 		table.refreshTable();
 		ListSelectionModel listSelectionModel = table.table.getSelectionModel();
 		listSelectionModel.addListSelectionListener(new Listener.FilterListener());
+		if(!FilterPanel.filterPanels.contains(this))
+			FilterPanel.filterPanels.add(this);
 		this.setVisible(false);
 		this.repaint();
 		this.setVisible(true);

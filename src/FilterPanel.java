@@ -1,5 +1,6 @@
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
@@ -8,7 +9,7 @@ public class FilterPanel extends JPanel {
 	public DynamicTable table;
 	public String columnName;
 	public GridBagConstraints constraints;
-
+	public static ArrayList<FilterPanel> filterPanels = new ArrayList<FilterPanel>();
 	public FilterPanel(String columnName) {
 		super();
 		this.constraints = new GridBagConstraints();
@@ -29,6 +30,11 @@ public class FilterPanel extends JPanel {
 		table.refreshTable();
 		table.table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.add(table, this.constraints);
+	}
+	
+	public void refreshFilterPanel() {
+		// To be overridden
+		System.out.println("THIS CODE SHOULD NOT BE RUNNING");
 	}
 
 	public String getSelectedRow() {
