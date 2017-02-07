@@ -1,2 +1,2 @@
 # TIMM
-Thomas' Insufferable Music Manager
+Thomas' Improved Music Manager
